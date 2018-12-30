@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample
+  labels:
+    app: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          readOnly: true
+          name: nginx-conf
+      - name: rails
+        image: takmnagaya/rails-k8s-sampleapp:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_HOST
+          value: mysql:3306
+        - name: DB_PASSWORD
+          value: mysql
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf
+          items:
+          - key: rails_app.conf
+            path: rails_app.conf

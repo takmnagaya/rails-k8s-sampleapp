@@ -1,0 +1,13 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sample
+spec:
+  rules:
+  - host: hoge.sample.local
+    http:
+      paths:
+      - backend:
+          serviceName: sample
+          servicePort: 80
