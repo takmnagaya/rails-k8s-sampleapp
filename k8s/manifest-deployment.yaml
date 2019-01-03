@@ -30,9 +30,9 @@ spec:
         - containerPort: 3000
         env:
         - name: DB_HOST
-          value: mysql:3306
-        - name: DB_PASSWORD
           value: mysql
+        - name: DB_PASSWORD
+          value: root
       volumes:
       - name: nginx-conf
         configMap:
