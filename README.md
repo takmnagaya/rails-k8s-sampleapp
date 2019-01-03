@@ -1,24 +1,8 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# 開発環境セットアップ
 
-Things you may want to cover:
+## DB作成、マイグレーション実行
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    $ kubectl create -f k8s/jobs/db-create-migrate.yaml # 数秒でJobが自動実行される
+    $ pods=$(kubectl get pods --selector=job-name=rails-db-create-migrate --output=jsonpath={.items..metadata.name}) && \
+      kubectl logs $pods # 実行結果のログを確認する

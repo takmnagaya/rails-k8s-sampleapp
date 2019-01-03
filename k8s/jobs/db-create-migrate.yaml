@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rails-db-create-migrate
+spec:
+  template:
+    spec:
+      containers:
+      - name: rails
+        image: takmnagaya/rails-k8s-sampleapp:latest
+        command: ["bundle",  "exec", "rails", "db:create", "db:migrate", "--trace"]
+        env:
+        - name: DB_HOST
+          value: mysql
+        - name: DB_PASSWORD
+          value: root
+      restartPolicy: Never
