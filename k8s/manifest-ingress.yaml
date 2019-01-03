@@ -5,8 +5,7 @@ metadata:
   name: sample
 spec:
   rules:
-  - host: hoge.sample.local
-    http:
+  - http:
       paths:
       - backend:
           serviceName: sample
