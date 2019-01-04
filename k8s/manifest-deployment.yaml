@@ -32,7 +32,10 @@ spec:
         - name: DB_HOST
           value: mysql
         - name: DB_PASSWORD
-          value: root
+          valueFrom:
+             secretKeyRef:
+               name: rails-secret
+               key: db_password
       volumes:
       - name: nginx-conf
         configMap:
