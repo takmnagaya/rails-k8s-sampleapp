@@ -9,6 +9,10 @@ image:
     repository: nginx
     tag: alpine
     pullPolicy: IfNotPresent
+  rails:
+    repository: takmnagaya/rails-k8s-sampleapp
+    tag: latest
+    pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
@@ -16,6 +20,7 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  railsPort: 3000
 
 localStorage:
   enabled: true

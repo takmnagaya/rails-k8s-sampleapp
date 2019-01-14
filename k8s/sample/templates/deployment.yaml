@@ -34,9 +34,10 @@ spec:
           readOnly: true
           name: nginx-conf
       - name: rails
-        image: takmnagaya/rails-k8s-sampleapp:latest
+        image: "{{ .Values.image.rails.repository }}:{{ .Values.image.rails.tag }}"
+        imagePullPolicy: {{ .Values.image.rails.pullPolicy }}
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.service.railsPort }}
         env:
         - name: DB_HOST
           value: mysql

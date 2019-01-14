@@ -11,7 +11,7 @@ metadata:
 data:
   rails_app.conf: |
     upstream app {
-      server localhost:3000;
+      server localhost:{{ .Values.service.railsPort }};
     }
 
     server {
