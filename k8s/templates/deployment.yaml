@@ -56,9 +56,9 @@ spec:
       volumes:
       {{- if .Values.localVolumes }}
       {{- range .Values.localVolumes }}
-        - name: {{ .name }}
-          hostPath:
-            path: {{ .hostPath }}
+      - name: {{ .name }}
+        hostPath:
+          path: {{ .hostPath }}
       {{- end }}
       {{- end }}
       - name: nginx-conf
