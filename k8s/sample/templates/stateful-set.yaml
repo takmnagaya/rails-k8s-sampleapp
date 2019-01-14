@@ -3,23 +3,32 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql
+  name: {{ include "sample.mysqlHost" .}}
   labels:
     app: mysql
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  serviceName: mysql
+  serviceName: {{ include "sample.mysqlHost" .}}
   selector:
     matchLabels:
       app: mysql
+      app.kubernetes.io/name: {{ include "sample.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   replicas: 1
   template:
     metadata:
       labels:
         app: mysql
+        app.kubernetes.io/name: {{ include "sample.name" . }}
+        helm.sh/chart: {{ include "sample.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
       terminationGracePeriodSeconds: 60
       containers:
-      - name: mysql
+      - name: {{ include "sample.mysqlHost" .}}
         image: mysql:5
         imagePullPolicy: Always
         ports:
@@ -28,8 +37,8 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: root
         volumeMounts:
-        - name: mysql-data
+        - name: mysql-data-{{ include "sample.name" . }}
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-data
+      - name: mysql-data-{{ include "sample.name" . }}
 {{- end }}

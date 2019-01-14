@@ -13,15 +13,18 @@ spec:
   type: NodePort
   selector:
     app: {{ include "sample.name" . }}
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
   - name: http
     port: {{ .Values.service.port }}
 
 ---
+{{- if .Values.localStorage.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: {{ include "sample.mysqlHost" .}}
   labels:
     app: mysql
     app.kubernetes.io/name: {{ include "sample.name" . }}
@@ -31,7 +34,10 @@ metadata:
 spec:
   ports:
   - port: 3306
-    name: mysql
+    name: {{ include "sample.mysqlHost" .}}
   clusterIP: None
   selector:
     app: mysql
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

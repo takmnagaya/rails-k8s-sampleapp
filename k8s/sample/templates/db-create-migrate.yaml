@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: rails-db-create-migrate
+  name: rails-db-create-migrate-{{ include "sample.name" . }}
   labels:
     app.kubernetes.io/name: {{ include "sample.name" . }}
     helm.sh/chart: {{ include "sample.chart" . }}
@@ -16,7 +16,7 @@ spec:
         command: ["bundle",  "exec", "rails", "db:create", "db:migrate", "--trace"]
         env:
         - name: DB_HOST
-          value: mysql
+          value: {{ include "sample.mysqlHost" .}}
         - name: DB_PASSWORD
           value: root
       restartPolicy: Never

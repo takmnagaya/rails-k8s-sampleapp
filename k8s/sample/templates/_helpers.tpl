@@ -3,7 +3,7 @@
 Expand the name of the chart.
 */}}
 {{- define "sample.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Chart.Name .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -29,4 +29,16 @@ Create chart name and version as used by the chart label.
 */}}
 {{- define "sample.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Get MySQL host
+ローカルストレージを使用する場合は、MySQLのserviceを用意する必要がある
+*/}}
+{{- define "sample.mysqlHost" -}}
+{{- if .Values.localStorage.enabled -}}
+{{- printf "%s-%s" "mysql" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- .Values.mysql.host -}}
+{{- end -}}
 {{- end -}}

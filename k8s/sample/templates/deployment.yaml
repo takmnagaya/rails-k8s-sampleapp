@@ -40,16 +40,16 @@ spec:
         - containerPort: {{ .Values.service.railsPort }}
         env:
         - name: DB_HOST
-          value: mysql
+          value: {{ include "sample.mysqlHost" .}}
         - name: DB_PASSWORD
           valueFrom:
              secretKeyRef:
-               name: rails-secret
+               name: rails-secret-{{ include "sample.name" . }}
                key: db_password
       volumes:
       - name: nginx-conf
         configMap:
-          name: nginx-conf
+          name: nginx-conf-{{ include "sample.name" . }}
           items:
           - key: rails_app.conf
             path: rails_app.conf

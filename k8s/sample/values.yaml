@@ -22,6 +22,9 @@ service:
   port: 80
   railsPort: 3000
 
+mysql:
+  host: mysql
+
 localStorage:
   enabled: true
 
