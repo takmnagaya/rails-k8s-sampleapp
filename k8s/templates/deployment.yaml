@@ -36,6 +36,11 @@ spec:
       - name: rails
         image: "{{ .Values.image.rails.repository }}:{{ .Values.image.rails.tag }}"
         imagePullPolicy: {{ .Values.image.rails.pullPolicy }}
+        {{/*{{- if .Values.localStorage.enabled -}}}*/}}
+        volumeMounts:
+        - mountPath: /app
+          name: local-rails
+        {{/*{{- end -}}*/}}
         ports:
         - containerPort: {{ .Values.service.railsPort }}
         env:
@@ -47,6 +52,11 @@ spec:
                name: rails-secret-{{ include "sample.name" . }}
                key: db_password
       volumes:
+      {{/*{{- if .Values.localStorage.enabled -}}}*/}}
+      - name: local-rails
+        hostPath:
+          path: /Users/t_nagaya/projects/rails-k8s-sampleapp
+      {{/*{{- end -}}*/}}
       - name: nginx-conf
         configMap:
           name: nginx-conf-{{ include "sample.name" . }}
