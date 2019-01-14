@@ -31,6 +31,11 @@ localStorage:
 localIngress:
   enabled: true
 
+localVolumes:
+- name: local-rails
+  mountPath: /app
+  hostPath: /Users/t_nagaya/projects/rails-k8s-sampleapp
+
 ingress:
   enabled: false
   annotations: {}
