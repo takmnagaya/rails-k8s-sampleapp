@@ -36,11 +36,13 @@ spec:
       - name: rails
         image: "{{ .Values.image.rails.repository }}:{{ .Values.image.rails.tag }}"
         imagePullPolicy: {{ .Values.image.rails.pullPolicy }}
-        {{/*{{- if .Values.localStorage.enabled -}}}*/}}
+        {{- if .Values.localVolumes }}
         volumeMounts:
-        - mountPath: /app
-          name: local-rails
-        {{/*{{- end -}}*/}}
+        {{- range .Values.localVolumes }}
+        - mountPath: {{ .mountPath }}
+          name: {{ .name }}
+        {{- end }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.service.railsPort }}
         env:
@@ -48,15 +50,17 @@ spec:
           value: {{ include "sample.mysqlHost" .}}
         - name: DB_PASSWORD
           valueFrom:
-             secretKeyRef:
-               name: rails-secret-{{ include "sample.name" . }}
-               key: db_password
+            secretKeyRef:
+              name: rails-secret-{{ include "sample.name" . }}
+              key: db_password
       volumes:
-      {{/*{{- if .Values.localStorage.enabled -}}}*/}}
-      - name: local-rails
-        hostPath:
-          path: /Users/t_nagaya/projects/rails-k8s-sampleapp
-      {{/*{{- end -}}*/}}
+      {{- if .Values.localVolumes }}
+      {{- range .Values.localVolumes }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .hostPath }}
+      {{- end }}
+      {{- end }}
       - name: nginx-conf
         configMap:
           name: nginx-conf-{{ include "sample.name" . }}
