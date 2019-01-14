@@ -19,8 +19,6 @@ See [kubernetes/ingress-nginx/blob/master/docs/deploy/index.md](https://github.c
 アプリケーションのソースコードの変更を即座にコンテナに反映させるため、ローカルのマシンのディレクトリをマウントするための設定を`values/development.yaml`に書く。
 
 ```diff
-localVolumes:
-- name: local-rails
   mountPath: /app
   # FIXME: Set the path to your local Rails application root directory
 -  hostPath: /Users/takmnagaya/projects/rails-k8s-sampleapp
