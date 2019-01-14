@@ -34,6 +34,7 @@ localIngress:
 localVolumes:
 - name: local-rails
   mountPath: /app
+  # FIXME: Set the path to your local Rails application root directory
   hostPath: /Users/t_nagaya/projects/rails-k8s-sampleapp
 
 ingress:
