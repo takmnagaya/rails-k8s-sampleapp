@@ -1,16 +1,29 @@
 ---
+{{- if .Values.localStorage.enabled -}}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: local-storage
+  labels:
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    helm.sh/chart: {{ include "sample.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
+{{- end }}
 
 ---
+{{- if .Values.localStorage.enabled -}}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: mysql-data
+  labels:
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    helm.sh/chart: {{ include "sample.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
   - ReadWriteOnce
@@ -18,3 +31,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
+{{- end }}

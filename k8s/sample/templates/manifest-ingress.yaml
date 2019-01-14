@@ -1,12 +1,19 @@
 ---
+{{- if .Values.localIngress.enabled -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: sample
+  name: {{ include "sample.name" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    helm.sh/chart: {{ include "sample.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   rules:
   - http:
       paths:
       - backend:
-          serviceName: sample
-          servicePort: 80
+          serviceName: {{ include "sample.name" . }}
+          servicePort: {{ .Values.service.port }}
+{{- end -}}

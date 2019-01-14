@@ -2,24 +2,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample
+  name: {{ include "sample.name" . }}
   labels:
-    app: sample
+    app: {{ include "sample.name" . }}
+    app.kubernetes.io/name: {{ include "sample.name" . }}
+    helm.sh/chart: {{ include "sample.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: sample
+      app: {{ include "sample.name" . }}
   template:
     metadata:
       labels:
-        app: sample
+        app: {{ include "sample.name" . }}
+        app.kubernetes.io/name: {{ include "sample.name" . }}
+        helm.sh/chart: {{ include "sample.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
       containers:
       - name: nginx
-        image: nginx:alpine
+        image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
+        imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.service.port }}
         volumeMounts:
         - mountPath: /etc/nginx/conf.d
           readOnly: true

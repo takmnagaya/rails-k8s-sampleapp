@@ -5,9 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+  nginx:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
@@ -15,6 +16,12 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+
+localStorage:
+  enabled: true
+
+localIngress:
+  enabled: true
 
 ingress:
   enabled: false
