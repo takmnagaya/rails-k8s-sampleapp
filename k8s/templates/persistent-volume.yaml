@@ -14,6 +14,38 @@ volumeBindingMode: WaitForFirstConsumer
 {{- end }}
 
 ---
+
+{{- if .Values.localStorage.enabled -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-data-{{ include "sample.name" . }}
+spec:
+  capacity:
+    storage: 4Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-{{ include "sample.name" . }}
+  local:
+    path: /mnt/disks/vol1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: beta.kubernetes.io/os
+          operator: In
+          values:
+          - linux
+#        {{- range .Values.nodeSelectors }}
+#        - key: {{- .name -}}
+#          operator: In
+#          values:
+#          - {{- .value -}}
+#        {{- end }}
+{{- end }}
+
+---
 {{- if .Values.localStorage.enabled -}}
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -30,5 +62,5 @@ spec:
   storageClassName: local-storage
   resources:
     requests:
-      storage: 10Gi
+      storage: 1Gi
 {{- end }}

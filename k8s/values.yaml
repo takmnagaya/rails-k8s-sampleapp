@@ -60,7 +60,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-nodeSelector: {}
+nodeSelectors:
+  - name: beta.kubernetes.io/os
+    value: linux
 
 tolerations: []
 
