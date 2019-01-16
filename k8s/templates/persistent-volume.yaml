@@ -33,16 +33,12 @@ spec:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: beta.kubernetes.io/os
+        {{- range .Values.nodeSelectors }}
+        - key: {{ .name }}
           operator: In
           values:
-          - linux
-#        {{- range .Values.nodeSelectors }}
-#        - key: {{- .name -}}
-#          operator: In
-#          values:
-#          - {{- .value -}}
-#        {{- end }}
+          - {{ .value }}
+        {{- end }}
 {{- end }}
 
 ---
