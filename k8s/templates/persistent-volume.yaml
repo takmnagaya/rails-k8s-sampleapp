@@ -55,7 +55,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: local-storage
+  storageClassName: local-storage-{{ include "sample.name" . }}
   resources:
     requests:
       storage: 1Gi
